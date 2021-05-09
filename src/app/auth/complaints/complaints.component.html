@@ -1,0 +1,165 @@
+<!-- USER PAGE -->
+
+<div class="page-user" *ngIf="userData.role == 'user'">
+  <div class="container">
+    <div class="row">
+      <div class="p-5 mb-3 d-flex align-items-center justify-content-between">
+        <h1>Welcome {{userData.firstName}} {{userData.lastName}}[{{userData.role}}]</h1>
+        <button (click)="logout()" class="btn btn-primary px-4 text-uppercase py-3">Logout</button>
+      </div>
+      <div class="col-md-12" *ngIf="!complaintSubmitted">
+        <div class="card rounded p-4">
+          <h2 class="pb-4">Complaint Form</h2>
+          <form (ngSubmit)="submitComplaint(form)" #form="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input class="form-control p-3" hidden name="UserId" [(ngModel)]="userData.id" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input class="form-control p-3" hidden name="status" [(ngModel)]="status" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input class="form-control p-3" name="firstName" [(ngModel)]="userData.firstName" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input class="form-control p-3" name="lastName" [(ngModel)]="userData.lastName" readonly>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-floating form-group my-3 w-75">
+              <input class="form-control" id="title" name="title" ngModel #title="ngModel" placeholder="title" required>
+              <label for="title">title</label>
+              <span class="help-block text-danger" *ngIf="!title.valid && title.touched">this field is required!</span>
+            </div>
+            <div class="form-group my-3 w-75">
+              <select class="form-select p-3" required name="type" [(ngModel)]="type" >
+                <option *ngFor="let type of complaintTypes" [value]="type">
+                  {{type}}
+                </option>
+              </select>
+              <span class="help-block text-danger" *ngIf="type == 'Type of complaint' && desc.touched">please choose a type</span>
+            </div>
+            <div class="form-floating my-3 w-75">
+              <textarea class="form-control" id="description" name="description" ngModel #desc="ngModel" placeholder="desc" style="height: 150px" required></textarea>
+              <label for="description">Description</label>
+              <span class="help-block text-danger" *ngIf="!desc.valid && desc.touched">this field is required!</span>
+            </div>
+
+            <div class="float-left">
+              <button type="submit" class="btn  py-3 btn-primary" [disabled]="!form.valid">Submit Form</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Submitted View -->
+      <div class="col-md-12" *ngIf="complaintSubmitted">
+        <div class="card rounded p-4">
+          <h2 class="pb-4">Your Current Complaint</h2>
+          <form (ngSubmit)="deleteComplaint()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group form-floating">
+                  <input class="form-control" id="title" [(value)]="complaintData.title" readonly>
+                  <label for="title">Title</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group form-floating">
+                  <input class="form-control" id="type" [(value)]="complaintData.type" readonly>
+                  <label for="title">Complaint Type</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group form-floating">
+                  <input class="form-control"  id="status"  [(value)]="complaintData.status" readonly>
+                  <label for="title">Status</label>
+                </div>
+              </div>
+              <div class="mt-3 d-flex justify-content-between align-items-end">
+                <div class="form-group form-floating col-md-4">
+                  <textarea class="form-control" id="desc"  readonly style="height: 150px">{{complaintData.description}} </textarea>
+                  <label for="desc">Description</label>
+                </div>
+                <div>
+                  <button type="submit" class="btn py-3 btn-danger">Delete</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ADMIN PAGE -->
+<div [class]="complaintList.length >= 3? 'page-admin' : 'page-reg'" *ngIf="userData.role == 'admin'">
+  <div class="container">
+    <div class="row">
+<div class="p-5 mb-3 d-flex align-items-center justify-content-between">
+  <h1>Welcome {{userData.firstName}} {{userData.lastName}}[{{userData.role}}]</h1>
+  <button (click)="logout()" class="btn btn-primary px-4 text-uppercase py-3">Logout</button>
+</div>
+<div class="col-md-12">
+  <h2 class="pb-4">Complaints List</h2>
+  <div class="card rounded p-4 my-3" *ngFor="let complaint of complaintList">
+    <form (ngSubmit)="saveStatus(form)" #form="ngForm">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group form-floating">
+            <input class="form-control" id="customerName" [(value)]="complaint.customerName" readonly>
+            <label for="customerName">Customer Name</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group form-floating">
+            <input class="form-control" id="customerEmail" [(value)]="complaint.customerEmail" readonly>
+            <label for="customerEmail">Customer Email</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <select class="form-select p-3" name="type" [(ngModel)]="complaint.status" >
+              <option *ngFor="let status of statusTypes" [value]="status">
+                {{status}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 mt-3">
+          <div class="form-group form-floating">
+            <input class="form-control"  id="title"  [(value)]="complaint.title" readonly>
+            <label for="title">Title</label>
+          </div>
+        </div>
+        <div class="col-md-4 mt-3">
+          <div class="form-group form-floating">
+            <input class="form-control" id="type" [(value)]="complaint.type" readonly>
+            <label for="title">Complaint Type</label>
+          </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-between align-items-end">
+          <div class="form-group form-floating col-md-4">
+            <textarea class="form-control" id="desc"  readonly style="height: 150px">{{complaint.description}} </textarea>
+            <label for="desc">Description</label>
+          </div>
+          <div>
+            <button type="submit" class="btn py-3 px-4 btn-primary">Save Status</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>

@@ -1,0 +1,47 @@
+<div class="page-reg d-flex align-items-center">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-6 mt-5 py-5">
+        <h1 class="main-header">Register as <br> <span *ngIf="role == 'user'">User</span> <span *ngIf="role == 'admin'">Admin</span> </h1>
+        <h4 class="py-3 w-75" *ngIf="role == 'user'">As a user you will have the ability to issue complaints and provide us with feedback for our vairous products and services.</h4>
+        <h4 class="py-3 w-75" *ngIf="role == 'admin'">As an admin you will have the responsibility of replying to the various incomming compiants to assure customer satisfaction.</h4>
+      </div>
+      <div class="col-md-6">
+        <div class="card rounded py-4 px-5">
+          <form (ngSubmit)="doRegister(form)" #form="ngForm">
+            <div class="form-group my-3">
+              <input type="text" class="form-control p-3" name="firstName" ngModel #firstName="ngModel" placeholder="First Name" required>
+              <span class="help-block text-danger" *ngIf="!firstName.valid && firstName.touched">this field is required!</span>
+            </div>
+            <div class="form-group my-3">
+              <input type="text" class="form-control p-3" name="lastName" ngModel #lastName="ngModel" placeholder="Last Name" required>
+              <span class="help-block text-danger" *ngIf="!lastName.valid && lastName.touched">this field is required!</span>
+            </div>
+            <div class="form-group my-3">
+              <input type="email" class="form-control p-3" name="email" ngModel #email="ngModel" placeholder="Email" required email>
+              <span class="help-block text-danger" *ngIf="!email.valid && email.touched">please enter a valid email!</span>
+            </div>
+            <div class="form-group my-3">
+              <input type="password" class="form-control p-3" name="password" ngModel #password="ngModel" placeholder="Password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$">
+              <span class="help-block text-danger" *ngIf="!password.valid && password.touched">Input Password between 6 - 20 characters with at least one uppercase, lowercase letter and a number.</span>
+            </div>
+            <div class="my-3" data-toggle="buttons">
+              Register as
+              <label class="mx-3">
+                <input type="radio" name="role" [(ngModel)]='role' value="user"> User
+              </label>
+              <label>
+                <input type="radio" name="role" [(ngModel)]='role' value="admin"> Admin
+              </label>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn text-uppercase w-100 py-3 btn-primary" [disabled]="!form.valid">Register</button>
+            </div>
+            <div class="mt-3">Already have an account? <a routerLink="/auth/login">login</a></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

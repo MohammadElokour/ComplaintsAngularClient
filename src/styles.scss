@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Poppins, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+@mixin btn($background_color) {
+  outline: none;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: $background-color;
+  color: white;
+}
+
+@mixin page($bgColor) {
+  height: 100vh;
+  padding: 30px;
+  background: url(assets/images/bg-intro-desktop.png) no-repeat center center fixed;
+  background-color: rgba($color: $bgColor, $alpha: 0.2);
+  background-size: cover;
+}
+
+
+.rounded {
+  border-radius: 0.75rem !important;
+}
+
+.btn-blue {
+  @include btn(deepskyblue)
+}
+
+.btn-red {
+  @include btn(crimson)
+}
+
+.page-reg {
+  @include page(#DC143C)
+}
+
+.page-login {
+  @include page(#00008B)
+}
+
+.page-user {
+  @include page(#5c04af);
+}
+
+.page-admin {
+  @include page(#DC143C);
+  height: auto;
+}
+
+.main-header {
+  font-weight: bold;
+  font-size: 70px;
+}
+
+
+input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched  {
+  border-color: #fe8e86 !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgb(254 142 134 / 25%);
+}
+
